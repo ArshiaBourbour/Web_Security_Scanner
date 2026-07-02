@@ -1,11 +1,3 @@
-"""4EYEZ -- Web Security Scanner. Thin CLI entry point.
-
-All the actual work lives in:
-  scanners/   -- SSL, Headers, DNS, WHOIS, HTML checkers + ScanManager
-  core/       -- shared base classes, registry, result schema, http client
-  cli/        -- banner, live progress view, report printer
-"""
-
 from rich.console import Console
 
 from cli.banner import banner
