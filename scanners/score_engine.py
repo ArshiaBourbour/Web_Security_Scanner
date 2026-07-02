@@ -3,7 +3,6 @@ class ScoreEngine:
         self.analysis = analysis
 
     def calculate(self):
-##.
         score = 100
 
         weights = {"HIGH": 20, "MEDIUM": 10, "LOW": 5}
