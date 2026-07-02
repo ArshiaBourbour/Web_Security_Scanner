@@ -13,4 +13,3 @@ def banner() -> None:
             border_style="cyan",
         )
     )
-.
