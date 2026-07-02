@@ -9,14 +9,6 @@ from core.registry import register
 
 @register("headers")
 class HeaderChecker(BaseChecker):
-    """Reads HTTP security headers from the response.
-
-    Same fields as before. Accepts an optional pre-fetched `response` so
-    ScanManager can share one HTTP request with HTMLChecker instead of
-    both fetching the same page separately. If no response is given, it
-    fetches its own -- so it still works standalone, same as before.
-    """
-
     name = "headers"
     needs_shared_page = True
 
