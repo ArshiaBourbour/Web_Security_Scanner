@@ -9,13 +9,6 @@ from core.registry import register
 
 @register("html")
 class HTMLChecker(BaseChecker):
-    """Counts <script>, <iframe>, <form> tags and http links in the page.
-
-    Same fields as before. Accepts an optional pre-fetched `response` so
-    ScanManager can share one HTTP request with HeaderChecker instead of
-    both fetching the same page separately.
-    """
-
     name = "html"
     needs_shared_page = True
 
