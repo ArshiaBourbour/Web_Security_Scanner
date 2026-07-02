@@ -1,16 +1,3 @@
-"""
-Scanner registry.
-
-Before: adding a new checker meant editing ScanManager.run_step's
-if/elif chain directly.
-
-Now: a checker registers itself with @register("name") on its class,
-and scanner/__init__.py auto-imports every module in the scanner
-package so registration happens automatically on startup. Adding a new
-scanner = drop a new file in scanner/ with a @register decorator.
-Nothing else needs to change.
-"""
-
 from __future__ import annotations
 
 import importlib
@@ -26,7 +13,6 @@ _DISCOVERED = False
 
 
 def register(name: str):
-    """Class decorator: registers a BaseChecker subclass under `name`."""
 
     def decorator(cls: Type[BaseChecker]) -> Type[BaseChecker]:
         if name in _REGISTRY and _REGISTRY[name] is not cls:
@@ -48,13 +34,10 @@ def get_checker(name: str) -> Type[BaseChecker]:
 
 
 def available_steps() -> list[str]:
-    """Names of every registered scanner, in registration order."""
     return list(_ORDER)
 
 
 def discover_checkers(package_name: str = "scanners") -> None:
-    """Import every module in `package_name` so its @register decorators
-    run. Safe to call multiple times -- only does the work once."""
     global _DISCOVERED
     if _DISCOVERED:
         return
