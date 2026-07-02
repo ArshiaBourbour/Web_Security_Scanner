@@ -9,14 +9,6 @@ from core.registry import register
 
 @register("ssl")
 class SSLChecker(BaseChecker):
-    """Fetches the TLS certificate presented on port 443.
-
-    Same fields as before (subject, issuer, notBefore, notAfter, version,
-    serialNumber, san). The try/except-return-{} that used to live here is
-    now handled once by BaseChecker.run(), which also logs failures instead
-    of hiding them.
-    """
-
     name = "ssl"
 
     def _check(self) -> dict[str, Any]:
