@@ -1,11 +1,3 @@
-"""
-Central logging configuration for 4EYEZ.
-
-Every module gets its logger via get_logger(__name__) instead of rolling
-its own handler. Errors caught by checkers are logged here instead of
-being silently swallowed.
-"""
-
 import logging
 import sys
 
