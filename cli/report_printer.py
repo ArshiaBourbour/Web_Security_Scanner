@@ -1,9 +1,3 @@
-"""
-Renders the final report: SSL, HTTP Security Headers, DNS Records,
-WHOIS Information, HTML Analysis, Risk Analysis, and Security Score --
-in that fixed order, regardless of scan/thread completion order.
-"""
-
 from rich.console import Console
 from rich.table import Table
 
@@ -11,7 +5,6 @@ from core.result import CheckResult, CheckStatus
 
 console = Console()
 
-# Fixed order the report always follows.
 STEPS = ["ssl", "headers", "dns", "whois", "html"]
 
 
