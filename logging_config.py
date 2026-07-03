@@ -1,11 +1,3 @@
-"""
-Central logging configuration for 4EYEZ.
-
-Every module gets its logger via get_logger(__name__) instead of rolling
-its own handler. Errors caught by checkers are logged here instead of
-being silently swallowed.
-"""
-
 import logging
 import sys
 
@@ -22,9 +14,7 @@ def configure_logging(level: int = logging.WARNING) -> None:
     logger.setLevel(level)
 
     handler = logging.StreamHandler(sys.stderr)
-    handler.setFormatter(
-        logging.Formatter("[%(levelname)s] %(name)s: %(message)s")
-    )
+    handler.setFormatter(logging.Formatter("[%(levelname)s] %(name)s: %(message)s"))
     logger.addHandler(handler)
     logger.propagate = False
 

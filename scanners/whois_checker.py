@@ -8,13 +8,6 @@ from core.registry import register
 
 @register("whois")
 class WhoisChecker(BaseChecker):
-    """Looks up domain registrar, creation/expiration dates, name servers.
-
-    Same fields as before. The bare except that used to hide lookup
-    failures is now handled by BaseChecker.run(), which logs the error
-    and reports it as a proper ERROR status instead of an empty {}.
-    """
-
     name = "whois"
 
     def _check(self) -> dict[str, Any]:
@@ -27,4 +20,3 @@ class WhoisChecker(BaseChecker):
             "expiration_date": str(domain.expiration_date),
             "name_servers": domain.name_servers,
         }
-

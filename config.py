@@ -15,6 +15,5 @@ USER_AGENT = "WebSecurityScanner/1.0(Python Requests)"
 # VirusTotal API
 VIRUSTOTAL_API_KEY = ""
 
-
 # Google Safe Browsing API
 GOOGLE_SAFE_BROWSING_API_KEY = ""

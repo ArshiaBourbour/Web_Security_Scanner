@@ -8,14 +8,6 @@ from core.registry import register
 
 @register("dns")
 class DNSChecker(BaseChecker):
-    """Resolves A, AAAA, MX, NS and TXT records.
-
-    Each record type is looked up independently: a missing AAAA record
-    (very common) shouldn't be treated as a failure of the whole check,
-    so per-record lookups still catch their own errors -- same behavior
-    as before, just logged at debug level instead of silently swallowed.
-    """
-
     name = "dns"
 
     def _query(self, record: str) -> list[str]:
@@ -34,4 +26,3 @@ class DNSChecker(BaseChecker):
             "NS": self._query("NS"),
             "TXT": self._query("TXT"),
         }
-

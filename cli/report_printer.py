@@ -1,9 +1,3 @@
-"""
-Renders the final report: SSL, HTTP Security Headers, DNS Records,
-WHOIS Information, HTML Analysis, Risk Analysis, and Security Score --
-in that fixed order, regardless of scan/thread completion order.
-"""
-
 from rich.console import Console
 from rich.table import Table
 
@@ -33,15 +27,19 @@ def print_ssl(result: CheckResult) -> None:
     if not data:
         console.print("[dim]No SSL data available.[/dim]")
         return
-    console.print(_kv_table([
-        ("Subject", data.get("subject")),
-        ("Issuer", data.get("issuer")),
-        ("Valid From", data.get("notBefore")),
-        ("Valid Until", data.get("notAfter")),
-        ("Version", data.get("version")),
-        ("Serial Number", data.get("serialNumber")),
-        ("SAN", data.get("san")),
-    ]))
+    console.print(
+        _kv_table(
+            [
+                ("Subject", data.get("subject")),
+                ("Issuer", data.get("issuer")),
+                ("Valid From", data.get("notBefore")),
+                ("Valid Until", data.get("notAfter")),
+                ("Version", data.get("version")),
+                ("Serial Number", data.get("serialNumber")),
+                ("SAN", data.get("san")),
+            ]
+        )
+    )
 
 
 def print_headers(result: CheckResult) -> None:
@@ -83,12 +81,16 @@ def print_whois(result: CheckResult) -> None:
     if not data:
         console.print("[dim]No WHOIS data available.[/dim]")
         return
-    console.print(_kv_table([
-        ("Registrar", data.get("registrar")),
-        ("Creation Date", data.get("creation_date")),
-        ("Expiration Date", data.get("expiration_date")),
-        ("Name Servers", data.get("name_servers")),
-    ]))
+    console.print(
+        _kv_table(
+            [
+                ("Registrar", data.get("registrar")),
+                ("Creation Date", data.get("creation_date")),
+                ("Expiration Date", data.get("expiration_date")),
+                ("Name Servers", data.get("name_servers")),
+            ]
+        )
+    )
 
 
 def print_html(result: CheckResult) -> None:
@@ -100,12 +102,16 @@ def print_html(result: CheckResult) -> None:
     if not data:
         console.print("[dim]No HTML data available.[/dim]")
         return
-    console.print(_kv_table([
-        ("Script Tags", data.get("script_count")),
-        ("Iframe Tags", data.get("iframe_count")),
-        ("Form Tags", data.get("form_count")),
-        ("External Links", data.get("external_links")),
-    ]))
+    console.print(
+        _kv_table(
+            [
+                ("Script Tags", data.get("script_count")),
+                ("Iframe Tags", data.get("iframe_count")),
+                ("Form Tags", data.get("form_count")),
+                ("External Links", data.get("external_links")),
+            ]
+        )
+    )
 
 
 PRINTERS = {
@@ -119,7 +125,9 @@ PRINTERS = {
 
 def print_scan_results(results: dict, steps: list[str] = STEPS) -> None:
     for step in steps:
-        default = CheckResult(name=step, status=CheckStatus.ERROR, error="step did not run")
+        default = CheckResult(
+            name=step, status=CheckStatus.ERROR, error="step did not run"
+        )
         PRINTERS[step](results.get(step, default))
 
 

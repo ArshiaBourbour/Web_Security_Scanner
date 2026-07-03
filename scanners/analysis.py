@@ -4,17 +4,6 @@ from core.result import CheckResult, CheckStatus
 
 
 class RiskAnalyzer:
-    """Turns raw CheckResults into severity-rated findings.
-
-    Same rules as before (missing SSL, missing A record, expired/absent
-    WHOIS dates, high script usage, etc). The one real change: this used
-    to test `if not some_dict:` to detect "checker found nothing", which
-    doesn't distinguish "checker ran and found nothing" from "checker
-    failed outright". Now it reads CheckResult.ok / .failed explicitly,
-    so a genuine network failure is treated the same as a real gap
-    (still flagged), but for the right, now-visible reason.
-    """
-
     def __init__(self, results: dict[str, CheckResult]):
         self.results = results
         self.findings: list[dict[str, str]] = []
@@ -25,7 +14,9 @@ class RiskAnalyzer:
         )
 
     def _result(self, step: str) -> CheckResult:
-        return self.results.get(step, CheckResult(name=step, status=CheckStatus.ERROR, data={}))
+        return self.results.get(
+            step, CheckResult(name=step, status=CheckStatus.ERROR, data={})
+        )
 
     def analyze_ssl(self):
         ssl_result = self._result("ssl")
