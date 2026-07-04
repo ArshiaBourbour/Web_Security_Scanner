@@ -7,10 +7,6 @@ from .rules import HEADER_RULES
 
 
 class FindingEngine:
-    """
-    Converts raw scanner outputs into structured security findings.
-    """
-
     def analyze_headers(self, headers: Dict[str, Any]) -> List[Finding]:
         findings: List[Finding] = []
 
@@ -35,10 +31,6 @@ class FindingEngine:
         return findings
 
     def analyze(self, scan_result) -> List[Finding]:
-        """
-        Main entry point for full scan result.
-        """
-
         findings: List[Finding] = []
 
         # headers analysis

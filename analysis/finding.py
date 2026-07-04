@@ -6,10 +6,6 @@ from typing import Any
 
 
 class Severity(str, Enum):
-    """
-    Severity levels used across the entire application.
-    """
-
     INFO = "INFO"
     LOW = "LOW"
     MEDIUM = "MEDIUM"
@@ -29,10 +25,6 @@ class Severity(str, Enum):
 
 @dataclass(slots=True, frozen=True)
 class Finding:
-    """
-    Represents a single security finding.
-    """
-
     id: str
 
     scanner: str
