@@ -62,11 +62,39 @@ class RiskAnalyzer:
         if html_result.get("script_count", 0) > 20:
             self.add("LOW", "High JS Usage", "Review scripts")
 
+    def analyze_cookies(self):
+        cookies_result = self._result("cookies")
+
+        if cookies_result.failed or not cookies_result.data:
+            return
+
+        if cookies_result.get("insecure_count", 0) > 0:
+            self.add(
+                "MEDIUM",
+                "Cookies Missing Secure Flag",
+                "Set the Secure attribute so cookies are only sent over HTTPS",
+            )
+
+        if cookies_result.get("no_httponly_count", 0) > 0:
+            self.add(
+                "MEDIUM",
+                "Cookies Missing HttpOnly Flag",
+                "Set HttpOnly to prevent cookie access via JavaScript",
+            )
+
+        if cookies_result.get("no_samesite_count", 0) > 0:
+            self.add(
+                "LOW",
+                "Cookies Missing SameSite Attribute",
+                "Set SameSite=Lax or Strict to mitigate CSRF",
+            )
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
         self.analyze_whois()
         self.analyze_html()
+        self.analyze_cookies()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
