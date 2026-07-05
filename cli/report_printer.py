@@ -14,6 +14,7 @@ STEPS = [
     "whois",
     "html",
     "technology",
+    "cookies",
 ]
 
 
@@ -48,6 +49,50 @@ def print_technology(result: CheckResult) -> None:
         )
 
     console.print(table)
+
+
+def print_cookies(result: CheckResult) -> None:
+    console.rule("[bold cyan]Cookie Security Analysis[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]Cookie check failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data:
+        console.print("[dim]No cookies were set by the target.[/dim]")
+        return
+
+    table = Table(show_header=True)
+
+    table.add_column("Name", style="cyan")
+    table.add_column("Secure", style="green")
+    table.add_column("HttpOnly", style="green")
+    table.add_column("SameSite", style="green")
+    table.add_column("Domain")
+    table.add_column("Type")
+
+    def _flag(value: bool) -> str:
+        return "[green]yes[/green]" if value else "[red]no[/red]"
+
+    for cookie in data.get("cookies", []):
+        table.add_row(
+            cookie["name"],
+            _flag(cookie["secure"]),
+            _flag(cookie["http_only"]),
+            cookie["samesite"] if cookie["samesite"] else "[red]none[/red]",
+            cookie["domain"] or "[dim]-[/dim]",
+            "Session" if cookie["session_cookie"] else "Persistent",
+        )
+
+    console.print(table)
+    console.print(
+        f"[bold]Total:[/bold] {data['total']}  "
+        f"[bold]Insecure:[/bold] {data['insecure_count']}  "
+        f"[bold]Missing HttpOnly:[/bold] {data['no_httponly_count']}  "
+        f"[bold]Missing SameSite:[/bold] {data['no_samesite_count']}"
+    )
 
 
 def _kv_table(rows: list[tuple[str, object]]) -> Table:
@@ -162,6 +207,7 @@ PRINTERS = {
     "whois": print_whois,
     "html": print_html,
     "technology": print_technology,
+    "cookies": print_cookies,
 }
 
 
