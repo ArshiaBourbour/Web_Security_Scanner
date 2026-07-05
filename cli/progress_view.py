@@ -15,6 +15,7 @@ STEP_LABELS = {
     "whois": "WHOIS",
     "html": "HTML",
     "technology": "Technology",
+    "cookies": "Cookies",
 }
 
 
