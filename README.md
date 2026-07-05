@@ -57,14 +57,14 @@ This project is primarily built for learning purposes and to explore:
 - ✅ Rules Engine
 - ✅ Risk Analyzer
 - ✅ Score Engine
-- ⬜ Final Refactoring
-- ⬜ Improved Progress UI
+- ✅ Final Refactoring
+- ✅ Improved Progress UI
 
 ---
 
 ### Phase 2 — Detection Engine
 
-- ⬜ Technology Detection
+- ✅ Technology Detection
 - ⬜ Cookie Security Analyzer
 - ⬜ HTTP Methods Scanner
 - ⬜ robots.txt Scanner
