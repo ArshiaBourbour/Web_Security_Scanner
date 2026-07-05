@@ -65,7 +65,7 @@ This project is primarily built for learning purposes and to explore:
 ### Phase 2 — Detection Engine
 
 - ✅ Technology Detection
-- ⬜ Cookie Security Analyzer
+- ✅ Cookie Security Analyzer
 - ⬜ HTTP Methods Scanner
 - ⬜ robots.txt Scanner
 - ⬜ sitemap.xml Scanner
