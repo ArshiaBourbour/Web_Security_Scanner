@@ -3,10 +3,51 @@ from rich.table import Table
 
 from core.result import CheckResult, CheckStatus
 
+
 console = Console()
 
 # Fixed order the report always follows.
-STEPS = ["ssl", "headers", "dns", "whois", "html"]
+STEPS = [
+    "ssl",
+    "headers",
+    "dns",
+    "whois",
+    "html",
+    "technology",
+]
+
+
+def print_technology(result: CheckResult) -> None:
+    console.rule("[bold cyan]Technology Detection[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]Technology detection failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data:
+        console.print("[dim]No technologies detected.[/dim]")
+        return
+
+    table = Table(show_header=True)
+
+    table.add_column("Category", style="cyan")
+    table.add_column("Detected", style="green")
+
+    technologies = data.get("technologies", data)
+
+    for category, values in technologies.items():
+
+        if not values:
+            continue
+
+        table.add_row(
+            category.title(),
+            ", ".join(values),
+        )
+
+    console.print(table)
 
 
 def _kv_table(rows: list[tuple[str, object]]) -> Table:
@@ -120,6 +161,7 @@ PRINTERS = {
     "dns": print_dns,
     "whois": print_whois,
     "html": print_html,
+    "technology": print_technology,
 }
 
 
