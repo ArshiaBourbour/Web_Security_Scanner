@@ -7,9 +7,9 @@ from .finding import Severity
 
 @dataclass(slots=True, frozen=True)
 class Rule:
-    """
-    Generic rule used by FindingEngine.
-    """
+    
+    ## Generic rule used by FindingEngine.
+    
 
     id: str
 
