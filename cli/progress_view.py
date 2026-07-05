@@ -14,6 +14,7 @@ STEP_LABELS = {
     "dns": "DNS",
     "whois": "WHOIS",
     "html": "HTML",
+    "technology": "Technology",
 }
 
 
