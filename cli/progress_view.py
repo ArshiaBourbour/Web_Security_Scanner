@@ -16,6 +16,7 @@ STEP_LABELS = {
     "html": "HTML",
     "technology": "Technology",
     "cookies": "Cookies",
+    "http_methods": "HTTP Methods",
 }
 
 
