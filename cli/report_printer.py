@@ -16,6 +16,7 @@ STEPS = [
     "technology",
     "cookies",
     "http_methods",
+    "robots",
 ]
 
 
@@ -154,6 +155,60 @@ def print_http_methods(result: CheckResult) -> None:
     )
 
 
+def print_robots(result: CheckResult) -> None:
+    console.rule("[bold cyan]robots.txt Scan[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]robots.txt check failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data:
+        console.print("[dim]No robots.txt data available.[/dim]")
+        return
+
+    if not data.get("found"):
+        status = data.get("status_code")
+        console.print(
+            f"[dim]No robots.txt found (status: {status}).[/dim]"
+        )
+        return
+
+    console.print(
+        f"[bold]User-agents referenced:[/bold] "
+        f"{', '.join(data['user_agents']) if data['user_agents'] else '[dim]none[/dim]'}"
+    )
+    console.print(f"[bold]Disallowed paths:[/bold] {len(data['disallowed_paths'])}")
+    console.print(f"[bold]Allowed paths:[/bold] {len(data['allowed_paths'])}")
+
+    if data.get("crawl_delay"):
+        console.print(f"[bold]Crawl-delay:[/bold] {data['crawl_delay']}")
+
+    if data.get("sitemaps"):
+        console.print("[bold]Sitemaps:[/bold]")
+        for sitemap in data["sitemaps"]:
+            console.print(f"  - {sitemap}")
+
+    if data.get("sensitive_paths"):
+        table = Table(show_header=True, title="Potentially Sensitive Disallowed Paths")
+        table.add_column("Path", style="red")
+
+        for path in data["sensitive_paths"]:
+            table.add_row(path)
+
+        console.print(table)
+        console.print(
+            "[yellow]These paths are publicly listed in robots.txt and may hint "
+            "at sensitive areas of the site. robots.txt is not access control — "
+            "anyone can read it.[/yellow]"
+        )
+    else:
+        console.print(
+            "[green]No obviously sensitive paths found in robots.txt.[/green]"
+        )
+
+
 def _kv_table(rows: list[tuple[str, object]]) -> Table:
     table = Table(show_header=False, box=None, padding=(0, 1))
     table.add_column(style="bold")
@@ -268,6 +323,7 @@ PRINTERS = {
     "technology": print_technology,
     "cookies": print_cookies,
     "http_methods": print_http_methods,
+    "robots": print_robots,
 }
 
 
