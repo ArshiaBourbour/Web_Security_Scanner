@@ -17,6 +17,7 @@ STEPS = [
     "cookies",
     "http_methods",
     "robots",
+    "sitemap",
 ]
 
 
@@ -209,6 +210,88 @@ def print_robots(result: CheckResult) -> None:
         )
 
 
+def print_sitemap(result: CheckResult) -> None:
+    console.rule("[bold cyan]sitemap.xml Scan[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]sitemap.xml check failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data:
+        console.print("[dim]No sitemap.xml data available.[/dim]")
+        return
+
+    if not data.get("found"):
+        console.print("[dim]No sitemap.xml could be found.[/dim]")
+        return
+
+    table = Table(show_header=True, title="Sitemap Sources")
+    table.add_column("URL", style="cyan", overflow="fold")
+    table.add_column("Status")
+    table.add_column("Type")
+    table.add_column("Entries")
+
+    for source in data.get("sources", []):
+        if source.get("found"):
+            status_str = "[green]200[/green]"
+            entry_type = source.get("type", "-")
+            entry_count = str(source.get("entry_count", "-"))
+            if source.get("error"):
+                entry_type = f"[red]{source['error']}[/red]"
+                entry_count = "-"
+        else:
+            status = source.get("status_code")
+            status_str = f"[dim]{status if status is not None else 'no response'}[/dim]"
+            entry_type = "-"
+            entry_count = "-"
+
+        table.add_row(source["url"], status_str, entry_type, entry_count)
+
+    console.print(table)
+    console.print(f"[bold]Total unique URLs discovered:[/bold] {data['total_urls']}")
+
+    if data.get("truncated"):
+        console.print(
+            f"[dim](showing first {len(data['sample_urls'])} URLs)[/dim]"
+        )
+
+    if data.get("sensitive_urls"):
+        sensitive_urls = data["sensitive_urls"]
+        display_limit = 20
+
+        sens_table = Table(show_header=True, title="Potentially Sensitive URLs")
+        sens_table.add_column("URL", style="red", overflow="fold")
+
+        for url in sensitive_urls[:display_limit]:
+            sens_table.add_row(url)
+
+        console.print(sens_table)
+
+        if len(sensitive_urls) > display_limit:
+            console.print(
+                f"[dim](+{len(sensitive_urls) - display_limit} more matched "
+                "keyword-based patterns, not shown)[/dim]"
+            )
+
+        if len(sensitive_urls) > display_limit:
+            console.print(
+                "[yellow]Note: a large number of matches usually means these are "
+                "keyword coincidences in normal content (e.g. package/product "
+                "names containing 'test' or 'admin'), not real sensitive paths. "
+                "Review manually rather than treating this as a confirmed "
+                "finding.[/yellow]"
+            )
+        else:
+            console.print(
+                "[yellow]These URLs are publicly listed in the sitemap and may "
+                "hint at sensitive areas of the site.[/yellow]"
+            )
+    else:
+        console.print("[green]No obviously sensitive URLs found in the sitemap.[/green]")
+
+
 def _kv_table(rows: list[tuple[str, object]]) -> Table:
     table = Table(show_header=False, box=None, padding=(0, 1))
     table.add_column(style="bold")
@@ -324,6 +407,7 @@ PRINTERS = {
     "cookies": print_cookies,
     "http_methods": print_http_methods,
     "robots": print_robots,
+    "sitemap": print_sitemap,
 }
 
 
