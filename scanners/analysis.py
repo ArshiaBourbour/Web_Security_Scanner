@@ -124,6 +124,25 @@ class RiskAnalyzer:
                 "Disable CONNECT unless this server is meant to act as a proxy",
             )
 
+    def analyze_robots(self):
+        robots_result = self._result("robots")
+
+        if robots_result.failed or not robots_result.data:
+            return
+
+        if not robots_result.get("found"):
+            return
+
+        sensitive_paths = robots_result.get("sensitive_paths", [])
+
+        if sensitive_paths:
+            self.add(
+                "LOW",
+                "Sensitive Paths Disclosed in robots.txt",
+                "Remove references to sensitive paths from robots.txt; "
+                "it is public and does not restrict access",
+            )
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
@@ -131,6 +150,7 @@ class RiskAnalyzer:
         self.analyze_html()
         self.analyze_cookies()
         self.analyze_http_methods()
+        self.analyze_robots()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
