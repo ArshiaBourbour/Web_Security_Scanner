@@ -12,3 +12,13 @@ def fetch(url: str) -> requests.Response:
         headers={"User-Agent": USER_AGENT},
     )
     return response
+
+
+def request(url: str, method: str, allow_redirects: bool = False) -> requests.Response:
+    return requests.request(
+        method,
+        url,
+        timeout=REQUEST_TIMEOUT,
+        headers={"User-Agent": USER_AGENT},
+        allow_redirects=allow_redirects,
+    )
