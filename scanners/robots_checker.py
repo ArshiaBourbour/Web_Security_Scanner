@@ -6,38 +6,7 @@ from urllib.parse import urlparse
 from core.base_checker import BaseChecker
 from core.http_client import request
 from core.registry import register
-
-
-SENSITIVE_KEYWORDS = [
-    "admin",
-    "backup",
-    "config",
-    "secret",
-    "private",
-    "credential",
-    "database",
-    ".git",
-    ".env",
-    ".sql",
-    ".bak",
-    ".zip",
-    ".tar",
-    "wp-admin",
-    "phpmyadmin",
-    "api-key",
-    "apikey",
-    "internal",
-    "staging",
-    "debug",
-    "test",
-    "console",
-    "dashboard",
-]
-
-
-def _looks_sensitive(path: str) -> bool:
-    lowered = path.lower()
-    return any(keyword in lowered for keyword in SENSITIVE_KEYWORDS)
+from core.sensitive_paths import looks_sensitive
 
 
 @register("robots")
@@ -103,7 +72,7 @@ class RobotsChecker(BaseChecker):
             elif field == "crawl-delay":
                 crawl_delay = value
 
-        sensitive_paths = sorted(p for p in disallowed_paths if _looks_sensitive(p))
+        sensitive_paths = sorted(p for p in disallowed_paths if looks_sensitive(p))
 
         return {
             "found": True,
