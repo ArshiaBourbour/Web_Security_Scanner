@@ -66,7 +66,7 @@ This project is primarily built for learning purposes and to explore:
 
 - ✅ Technology Detection
 - ✅ Cookie Security Analyzer
-- ⬜ HTTP Methods Scanner
+- ✅ HTTP Methods Scanner
 - ⬜ robots.txt Scanner
 - ⬜ sitemap.xml Scanner
 
