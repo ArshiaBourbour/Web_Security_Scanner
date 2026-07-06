@@ -89,12 +89,48 @@ class RiskAnalyzer:
                 "Set SameSite=Lax or Strict to mitigate CSRF",
             )
 
+    def analyze_http_methods(self):
+        methods_result = self._result("http_methods")
+
+        if methods_result.failed or not methods_result.data:
+            return
+
+        if methods_result.get("trace_reflects_body"):
+            self.add(
+                "HIGH",
+                "TRACE Method Enabled (XST Risk)",
+                "Disable the TRACE method to prevent Cross-Site Tracing attacks",
+            )
+        elif methods_result.get("trace_enabled"):
+            self.add(
+                "MEDIUM",
+                "TRACE Method Enabled",
+                "Disable the TRACE method on the web server",
+            )
+
+        risky = set(methods_result.get("risky_methods", [])) - {"TRACE"}
+
+        if "PUT" in risky or "DELETE" in risky:
+            self.add(
+                "MEDIUM",
+                "State-Changing HTTP Methods Allowed",
+                "Disable PUT/DELETE unless explicitly required and authenticated",
+            )
+
+        if "CONNECT" in risky:
+            self.add(
+                "MEDIUM",
+                "CONNECT Method Allowed",
+                "Disable CONNECT unless this server is meant to act as a proxy",
+            )
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
         self.analyze_whois()
         self.analyze_html()
         self.analyze_cookies()
+        self.analyze_http_methods()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
