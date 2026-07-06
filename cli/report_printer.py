@@ -15,6 +15,7 @@ STEPS = [
     "html",
     "technology",
     "cookies",
+    "http_methods",
 ]
 
 
@@ -92,6 +93,64 @@ def print_cookies(result: CheckResult) -> None:
         f"[bold]Insecure:[/bold] {data['insecure_count']}  "
         f"[bold]Missing HttpOnly:[/bold] {data['no_httponly_count']}  "
         f"[bold]Missing SameSite:[/bold] {data['no_samesite_count']}"
+    )
+
+
+def print_http_methods(result: CheckResult) -> None:
+    console.rule("[bold cyan]HTTP Methods Scan[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]HTTP methods check failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data:
+        console.print("[dim]No HTTP methods could be determined.[/dim]")
+        return
+
+    table = Table(show_header=True)
+
+    table.add_column("Method", style="cyan")
+    table.add_column("Status Code")
+    table.add_column("Result")
+
+    labels = {
+        "allowed": "[green]allowed[/green]",
+        "disallowed": "[dim]not allowed[/dim]",
+        "unknown": "[yellow]unclear[/yellow]",
+        "unreachable": "[dim]no response[/dim]",
+    }
+
+    for entry in data.get("results", []):
+        status = entry["status"]
+        table.add_row(
+            entry["method"],
+            str(status) if status is not None else "[dim]-[/dim]",
+            labels.get(entry["classification"], entry["classification"]),
+        )
+
+    console.print(table)
+
+    if data.get("trace_enabled"):
+        if data.get("trace_reflects_body"):
+            console.print(
+                "[red]TRACE is enabled and reflects request data in the response "
+                "body (possible Cross-Site Tracing / XST risk).[/red]"
+            )
+        else:
+            console.print("[yellow]TRACE method is enabled on this server.[/yellow]")
+
+    if data.get("risky_methods"):
+        console.print(
+            f"[bold]Confirmed risky methods:[/bold] {', '.join(data['risky_methods'])}"
+        )
+    else:
+        console.print("[green]No risky HTTP methods were confirmed as enabled.[/green]")
+
+    console.print(
+        "[dim]Note: 'unclear' means the route responded without confirming or "
+        "denying that method (e.g. 404/403) — this is not a confirmed finding.[/dim]"
     )
 
 
@@ -208,6 +267,7 @@ PRINTERS = {
     "html": print_html,
     "technology": print_technology,
     "cookies": print_cookies,
+    "http_methods": print_http_methods,
 }
 
 
