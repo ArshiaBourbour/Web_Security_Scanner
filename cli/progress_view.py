@@ -18,6 +18,7 @@ STEP_LABELS = {
     "cookies": "Cookies",
     "http_methods": "HTTP Methods",
     "robots": "Robots.txt",
+    "sitemap": "Sitemap",
 }
 
 
