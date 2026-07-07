@@ -18,6 +18,7 @@ STEPS = [
     "http_methods",
     "robots",
     "sitemap",
+    "csp",
 ]
 
 
@@ -292,6 +293,50 @@ def print_sitemap(result: CheckResult) -> None:
         console.print("[green]No obviously sensitive URLs found in the sitemap.[/green]")
 
 
+def print_csp(result: CheckResult) -> None:
+    console.rule("[bold cyan]CSP Analysis[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]CSP check failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data or not data.get("found"):
+        console.print("[red]No Content-Security-Policy header present.[/red]")
+        return
+
+    if data.get("report_only"):
+        console.print("[yellow]Policy is enforced via Report-Only header (not blocking).[/yellow]")
+
+    console.print(f"[dim]{data['raw']}[/dim]")
+
+    table = Table(show_header=True)
+    table.add_column("Directive", style="cyan")
+    table.add_column("Values")
+
+    for directive, values in data.get("directives", {}).items():
+        table.add_row(directive, " ".join(values) if values else "[dim](empty)[/dim]")
+
+    console.print(table)
+
+    issues = data.get("issues", [])
+
+    if not issues:
+        console.print("[green]No common CSP misconfigurations detected.[/green]")
+        return
+
+    issues_table = Table(show_header=True, title="CSP Issues")
+    issues_table.add_column("Severity")
+    issues_table.add_column("Issue", style="cyan")
+    issues_table.add_column("Detail")
+
+    for issue in issues:
+        issues_table.add_row(issue["severity"], issue["title"], issue["detail"])
+
+    console.print(issues_table)
+
+
 def _kv_table(rows: list[tuple[str, object]]) -> Table:
     table = Table(show_header=False, box=None, padding=(0, 1))
     table.add_column(style="bold")
@@ -408,6 +453,7 @@ PRINTERS = {
     "http_methods": print_http_methods,
     "robots": print_robots,
     "sitemap": print_sitemap,
+    "csp": print_csp,
 }
 
 
