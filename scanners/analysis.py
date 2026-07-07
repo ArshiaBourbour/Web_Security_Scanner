@@ -161,6 +161,19 @@ class RiskAnalyzer:
                 "Remove sensitive/internal URLs from the public sitemap",
             )
 
+    def analyze_csp(self):
+        csp_result = self._result("csp")
+
+        if csp_result.failed or not csp_result.data:
+            return
+
+        if not csp_result.get("found"):
+            self.add("MEDIUM", "No CSP Header", "Add a Content-Security-Policy header")
+            return
+
+        for issue in csp_result.get("issues", []):
+            self.add(issue["severity"], issue["title"], issue["detail"])
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
@@ -170,6 +183,7 @@ class RiskAnalyzer:
         self.analyze_http_methods()
         self.analyze_robots()
         self.analyze_sitemap()
+        self.analyze_csp()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
