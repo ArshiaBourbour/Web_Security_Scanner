@@ -75,7 +75,7 @@ This project is primarily built for learning purposes and to explore:
 ### Phase 3 — Security Analysis
 
 - ✅ CSP Analyzer
-- ⬜ CORS Analyzer
+- ✅ CORS Analyzer
 - ⬜ HSTS Analyzer
 - ⬜ Clickjacking Detection
 - ⬜ Directory Listing Detection
