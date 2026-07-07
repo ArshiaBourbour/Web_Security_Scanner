@@ -20,6 +20,7 @@ STEP_LABELS = {
     "robots": "Robots.txt",
     "sitemap": "Sitemap",
     "csp": "CSP",
+    "cors": "CORS",
 }
 
 
