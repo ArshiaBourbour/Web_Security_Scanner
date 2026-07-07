@@ -174,6 +174,18 @@ class RiskAnalyzer:
         for issue in csp_result.get("issues", []):
             self.add(issue["severity"], issue["title"], issue["detail"])
 
+    def analyze_cors(self):
+        cors_result = self._result("cors")
+
+        if cors_result.failed or not cors_result.data:
+            return
+
+        if not cors_result.get("found"):
+            return
+
+        for issue in cors_result.get("issues", []):
+            self.add(issue["severity"], issue["title"], issue["detail"])
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
@@ -184,6 +196,7 @@ class RiskAnalyzer:
         self.analyze_robots()
         self.analyze_sitemap()
         self.analyze_csp()
+        self.analyze_cors()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
