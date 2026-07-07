@@ -143,6 +143,24 @@ class RiskAnalyzer:
                 "it is public and does not restrict access",
             )
 
+    def analyze_sitemap(self):
+        sitemap_result = self._result("sitemap")
+
+        if sitemap_result.failed or not sitemap_result.data:
+            return
+
+        if not sitemap_result.get("found"):
+            return
+
+        sensitive_urls = sitemap_result.get("sensitive_urls", [])
+
+        if 0 < len(sensitive_urls) <= 20:
+            self.add(
+                "LOW",
+                "Sensitive URLs Disclosed in sitemap.xml",
+                "Remove sensitive/internal URLs from the public sitemap",
+            )
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
@@ -151,6 +169,7 @@ class RiskAnalyzer:
         self.analyze_cookies()
         self.analyze_http_methods()
         self.analyze_robots()
+        self.analyze_sitemap()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
