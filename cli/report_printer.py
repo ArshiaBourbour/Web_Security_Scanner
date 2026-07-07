@@ -19,6 +19,7 @@ STEPS = [
     "robots",
     "sitemap",
     "csp",
+    "cors",
 ]
 
 
@@ -337,6 +338,46 @@ def print_csp(result: CheckResult) -> None:
     console.print(issues_table)
 
 
+def print_cors(result: CheckResult) -> None:
+    console.rule("[bold cyan]CORS Analysis[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]CORS check failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data or not data.get("found"):
+        console.print("[green]No CORS headers present — default same-origin policy applies.[/green]")
+        return
+
+    console.print(f"[dim]Test Origin used: {data['test_origin']}[/dim]")
+    console.print(_kv_table(
+        [
+            ("Access-Control-Allow-Origin", data.get("allow_origin")),
+            ("Access-Control-Allow-Credentials", data.get("allow_credentials")),
+            ("Access-Control-Allow-Methods", data.get("allow_methods")),
+            ("Access-Control-Allow-Headers", data.get("allow_headers")),
+        ]
+    ))
+
+    issues = data.get("issues", [])
+
+    if not issues:
+        console.print("[green]No common CORS misconfigurations detected.[/green]")
+        return
+
+    issues_table = Table(show_header=True, title="CORS Issues")
+    issues_table.add_column("Severity")
+    issues_table.add_column("Issue", style="cyan")
+    issues_table.add_column("Detail")
+
+    for issue in issues:
+        issues_table.add_row(issue["severity"], issue["title"], issue["detail"])
+
+    console.print(issues_table)
+
+
 def _kv_table(rows: list[tuple[str, object]]) -> Table:
     table = Table(show_header=False, box=None, padding=(0, 1))
     table.add_column(style="bold")
@@ -454,6 +495,7 @@ PRINTERS = {
     "robots": print_robots,
     "sitemap": print_sitemap,
     "csp": print_csp,
+    "cors": print_cors,
 }
 
 
