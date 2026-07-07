@@ -45,3 +45,17 @@ def request(url: str, method: str, allow_redirects: bool = False) -> requests.Re
             allow_redirects=allow_redirects,
         )
     )
+
+
+def request_with_headers(
+    url: str, method: str, extra_headers: dict, allow_redirects: bool = False
+) -> requests.Response:
+    return _with_retry(
+        lambda: requests.request(
+            method,
+            url,
+            timeout=REQUEST_TIMEOUT,
+            headers={"User-Agent": USER_AGENT, **extra_headers},
+            allow_redirects=allow_redirects,
+        )
+    )
