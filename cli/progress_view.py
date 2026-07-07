@@ -19,6 +19,7 @@ STEP_LABELS = {
     "http_methods": "HTTP Methods",
     "robots": "Robots.txt",
     "sitemap": "Sitemap",
+    "csp": "CSP",
 }
 
 
