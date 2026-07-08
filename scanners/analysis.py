@@ -186,6 +186,19 @@ class RiskAnalyzer:
         for issue in cors_result.get("issues", []):
             self.add(issue["severity"], issue["title"], issue["detail"])
 
+    def analyze_hsts(self):
+        hsts_result = self._result("hsts")
+
+        if hsts_result.failed or not hsts_result.data:
+            return
+
+        if not hsts_result.get("found"):
+            self.add("MEDIUM", "No HSTS Header", "Add a Strict-Transport-Security header")
+            return
+
+        for issue in hsts_result.get("issues", []):
+            self.add(issue["severity"], issue["title"], issue["detail"])
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
@@ -197,6 +210,7 @@ class RiskAnalyzer:
         self.analyze_sitemap()
         self.analyze_csp()
         self.analyze_cors()
+        self.analyze_hsts()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
