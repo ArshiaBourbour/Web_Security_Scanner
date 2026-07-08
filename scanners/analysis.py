@@ -154,11 +154,7 @@ class RiskAnalyzer:
 
         sensitive_urls = sitemap_result.get("sensitive_urls", [])
 
-        # A small, focused set of matches is a meaningful signal. A very large
-        # number usually just means the keywords coincidentally show up in
-        # normal user/product-generated content (e.g. package names on a
-        # registry site) rather than pointing at real sensitive paths, so we
-        # don't want to raise a "finding" for that noise.
+        
         if 0 < len(sensitive_urls) <= 20:
             self.add(
                 "LOW",
@@ -213,6 +209,24 @@ class RiskAnalyzer:
         for issue in cj_result.get("issues", []):
             self.add(issue["severity"], issue["title"], issue["detail"])
 
+    def analyze_directory_listing(self):
+        dl_result = self._result("directory_listing")
+
+        if dl_result.failed or not dl_result.data:
+            return
+
+        if not dl_result.get("found"):
+            return
+
+        listings = dl_result.get("listings", [])
+        severity = "HIGH" if "/" in listings else "MEDIUM"
+
+        self.add(
+            severity,
+            "Directory Listing Exposed",
+            f"Disable directory listing on: {', '.join(listings)}",
+        )
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
@@ -226,6 +240,7 @@ class RiskAnalyzer:
         self.analyze_cors()
         self.analyze_hsts()
         self.analyze_clickjacking()
+        self.analyze_directory_listing()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
