@@ -21,6 +21,7 @@ STEPS = [
     "csp",
     "cors",
     "hsts",
+    "clickjacking",
 ]
 
 
@@ -418,6 +419,45 @@ def print_hsts(result: CheckResult) -> None:
     console.print(issues_table)
 
 
+def print_clickjacking(result: CheckResult) -> None:
+    console.rule("[bold cyan]Clickjacking Detection[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]Clickjacking check failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data:
+        console.print("[dim]No clickjacking data available.[/dim]")
+        return
+
+    console.print(_kv_table(
+        [
+            ("X-Frame-Options", data.get("x_frame_options")),
+            ("CSP frame-ancestors", data.get("frame_ancestors")),
+            ("Protected", data.get("protected")),
+            ("Protection source", data.get("protection_source")),
+        ]
+    ))
+
+    issues = data.get("issues", [])
+
+    if not issues:
+        console.print("[green]No clickjacking issues detected.[/green]")
+        return
+
+    issues_table = Table(show_header=True, title="Clickjacking Issues")
+    issues_table.add_column("Severity")
+    issues_table.add_column("Issue", style="cyan")
+    issues_table.add_column("Detail")
+
+    for issue in issues:
+        issues_table.add_row(issue["severity"], issue["title"], issue["detail"])
+
+    console.print(issues_table)
+
+
 def _kv_table(rows: list[tuple[str, object]]) -> Table:
     table = Table(show_header=False, box=None, padding=(0, 1))
     table.add_column(style="bold")
@@ -537,6 +577,7 @@ PRINTERS = {
     "csp": print_csp,
     "cors": print_cors,
     "hsts": print_hsts,
+    "clickjacking": print_clickjacking,
 }
 
 
