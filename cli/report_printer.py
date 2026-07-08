@@ -22,6 +22,7 @@ STEPS = [
     "cors",
     "hsts",
     "clickjacking",
+    "directory_listing",
 ]
 
 
@@ -458,6 +459,32 @@ def print_clickjacking(result: CheckResult) -> None:
     console.print(issues_table)
 
 
+def print_directory_listing(result: CheckResult) -> None:
+    console.rule("[bold cyan]Directory Listing Detection[/bold cyan]")
+
+    if result.failed:
+        console.print(f"[red]Directory listing check failed: {result.error}[/red]")
+        return
+
+    data = result.data
+
+    if not data or not data.get("found"):
+        console.print("[green]No open directory listings found on common paths.[/green]")
+        return
+
+    table = Table(show_header=True, title="Exposed Directory Listings")
+    table.add_column("Path", style="red")
+
+    for path in data["listings"]:
+        table.add_row(path)
+
+    console.print(table)
+    console.print(
+        "[yellow]These directories return a browsable file listing, which can "
+        "leak file names, backups, and internal structure to anyone.[/yellow]"
+    )
+
+
 def _kv_table(rows: list[tuple[str, object]]) -> Table:
     table = Table(show_header=False, box=None, padding=(0, 1))
     table.add_column(style="bold")
@@ -578,6 +605,7 @@ PRINTERS = {
     "cors": print_cors,
     "hsts": print_hsts,
     "clickjacking": print_clickjacking,
+    "directory_listing": print_directory_listing,
 }
 
 
