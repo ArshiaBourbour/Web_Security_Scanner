@@ -23,6 +23,7 @@ STEP_LABELS = {
     "cors": "CORS",
     "hsts": "HSTS",
     "clickjacking": "Clickjacking",
+    "directory_listing": "Dir Listing",
 }
 
 
