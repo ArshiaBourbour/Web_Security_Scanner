@@ -22,6 +22,7 @@ STEP_LABELS = {
     "csp": "CSP",
     "cors": "CORS",
     "hsts": "HSTS",
+    "clickjacking": "Clickjacking",
 }
 
 
