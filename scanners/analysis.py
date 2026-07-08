@@ -154,6 +154,11 @@ class RiskAnalyzer:
 
         sensitive_urls = sitemap_result.get("sensitive_urls", [])
 
+        # A small, focused set of matches is a meaningful signal. A very large
+        # number usually just means the keywords coincidentally show up in
+        # normal user/product-generated content (e.g. package names on a
+        # registry site) rather than pointing at real sensitive paths, so we
+        # don't want to raise a "finding" for that noise.
         if 0 < len(sensitive_urls) <= 20:
             self.add(
                 "LOW",
@@ -199,6 +204,15 @@ class RiskAnalyzer:
         for issue in hsts_result.get("issues", []):
             self.add(issue["severity"], issue["title"], issue["detail"])
 
+    def analyze_clickjacking(self):
+        cj_result = self._result("clickjacking")
+
+        if cj_result.failed or not cj_result.data:
+            return
+
+        for issue in cj_result.get("issues", []):
+            self.add(issue["severity"], issue["title"], issue["detail"])
+
     def analyze(self) -> dict[str, Any]:
         self.analyze_ssl()
         self.analyze_dns()
@@ -211,6 +225,7 @@ class RiskAnalyzer:
         self.analyze_csp()
         self.analyze_cors()
         self.analyze_hsts()
+        self.analyze_clickjacking()
 
         return {"risk": self.risk_level(), "findings": self.findings}
 
