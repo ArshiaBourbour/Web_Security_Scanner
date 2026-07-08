@@ -21,6 +21,7 @@ STEP_LABELS = {
     "sitemap": "Sitemap",
     "csp": "CSP",
     "cors": "CORS",
+    "hsts": "HSTS",
 }
 
 
