@@ -85,7 +85,7 @@ This project is primarily built for learning purposes and to explore:
 ### Phase 4 — Reporting
 
 - ✅ HTML Report
-- ⬜ PDF Report
+- ✅ PDF Report
 - ⬜ JSON Export
 - ⬜ Executive Summary
 
