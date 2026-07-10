@@ -8,6 +8,7 @@ from cli.report_printer import (
     print_scan_results,
     print_score,
 )
+from reporting.html_report import save_html_report
 from scanners.analysis import RiskAnalyzer
 from scanners.manager import ScanManager
 from scanners.score_engine import ScoreEngine
@@ -32,6 +33,9 @@ def main() -> None:
     print_scan_results(results, STEPS)
     print_risk_analysis(analysis)
     print_score(score)
+
+    report_path = save_html_report(target, results, analysis, score, STEPS)
+    console.print(f"\n[bold green]HTML report saved to:[/bold green] {report_path}")
 
 
 if __name__ == "__main__":
