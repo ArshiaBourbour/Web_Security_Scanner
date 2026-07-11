@@ -1,4 +1,6 @@
 from __future__ import annotations
+from reporting.executive_summary import generate_executive_summary
+
 
 from datetime import datetime
 from pathlib import Path
@@ -610,6 +612,16 @@ def generate_pdf_report(
         )
     )
     story.append(summary_table)
+    story.append(Spacer(1, 12))
+
+    exec_summary = generate_executive_summary(target, analysis, score)
+    story.append(Paragraph("Executive Summary", _styles["SectionHeading"]))
+    story.append(_ptext(exec_summary["narrative"], "Small"))
+    if exec_summary["top_findings"]:
+        story.append(Spacer(1, 6))
+        story.append(Paragraph("Top findings:", _styles["Small"]))
+        for f in exec_summary["top_findings"]:
+            story.append(_ptext(f"- [{f['severity']}] {f['title']}", "Small"))
     story.append(Spacer(1, 12))
 
     story.append(Paragraph("Risk Analysis", _styles["SectionHeading"]))
