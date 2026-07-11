@@ -1,4 +1,6 @@
 from __future__ import annotations
+from reporting.executive_summary import generate_executive_summary
+
 
 import html
 import re
@@ -464,16 +466,22 @@ def generate_html_report(
 ) -> str:
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     grade_class = "grade-" + score["grade"].replace("+", "plus")
+    exec_summary = generate_executive_summary(target, analysis, score)
+
+    top_findings_html = ""
+    if exec_summary["top_findings"]:
+        items = "".join(
+            f"<li><span class='sev sev-{_esc(f['severity']).lower()}'>{_esc(f['severity'])}</span> "
+            f"{_esc(f['title'])}</li>"
+            for f in exec_summary["top_findings"]
+        )
+        top_findings_html = f"<p><strong>Top findings:</strong></p><ul>{items}</ul>"
 
     sections = ""
     for step in steps:
         result = results.get(step, _default_result(step))
         renderer = SECTION_RENDERERS.get(step)
-        body = (
-            renderer(result)
-            if renderer
-            else _empty("No renderer available for this check.")
-        )
+        body = renderer(result) if renderer else _empty("No renderer available for this check.")
         title = STEP_TITLES.get(step, step)
         sections += f"<div class='section'><h2>{_esc(title)}</h2>{body}</div>"
 
@@ -489,15 +497,21 @@ def generate_html_report(
 <p class="meta">Target: <strong>{_esc(target)}</strong> &nbsp;|&nbsp; Generated: {_esc(generated_at)}</p>
 
 <div class="summary">
-  <div class="score-badge {grade_class}">{score["score"]}/100 ({_esc(score["grade"])})</div>
+  <div class="score-badge {grade_class}">{score['score']}/100 ({_esc(score['grade'])})</div>
   <div>
-    <p>Overall Risk: <strong>{_esc(score["risk"])}</strong></p>
-    <p>High: {score["high"]} &nbsp; Medium: {score["medium"]} &nbsp; Low: {score["low"]}</p>
+    <p>Overall Risk: <strong>{_esc(score['risk'])}</strong></p>
+    <p>High: {score['high']} &nbsp; Medium: {score['medium']} &nbsp; Low: {score['low']}</p>
   </div>
 </div>
 
+<h2>Executive Summary</h2>
+<div class="section">
+  <p>{_esc(exec_summary['narrative'])}</p>
+  {top_findings_html}
+</div>
+
 <h2>Risk Analysis</h2>
-{_render_findings_table(analysis["findings"])}
+{_render_findings_table(analysis['findings'])}
 
 {sections}
 
