@@ -86,7 +86,7 @@ This project is primarily built for learning purposes and to explore:
 
 - ✅ HTML Report
 - ✅ PDF Report
-- ⬜ JSON Export
+- ✅ JSON Export
 - ⬜ Executive Summary
 
 ---
