@@ -8,6 +8,7 @@ from typing import Any
 from config import REPORT_DIR
 from core.report_naming import safe_report_filename
 from core.result import CheckResult, CheckStatus
+from reporting.executive_summary import generate_executive_summary
 
 
 def _result_to_dict(result: CheckResult) -> dict[str, Any]:
@@ -34,6 +35,7 @@ def build_report_dict(
         "target": target,
         "generated_at": datetime.now().isoformat(),
         "score": score,
+        "executive_summary": generate_executive_summary(target, analysis, score),
         "risk_analysis": analysis,
         "checks": {
             step: _result_to_dict(results.get(step, _default_result(step)))
