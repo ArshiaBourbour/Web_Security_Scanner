@@ -9,6 +9,7 @@ from cli.report_printer import (
     print_score,
 )
 from reporting.html_report import save_html_report
+from reporting.json_report import save_json_report
 from reporting.pdf_report import save_pdf_report
 from scanners.analysis import RiskAnalyzer
 from scanners.manager import ScanManager
@@ -40,6 +41,9 @@ def main() -> None:
 
     pdf_path = save_pdf_report(target, results, analysis, score, STEPS)
     console.print(f"[bold green]PDF report saved to:[/bold green] {pdf_path}")
+
+    json_path = save_json_report(target, results, analysis, score, STEPS)
+    console.print(f"[bold green]JSON report saved to:[/bold green] {json_path}")
 
 
 if __name__ == "__main__":
