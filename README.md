@@ -123,21 +123,14 @@ Example output directory:
 reports/
 ```
 
-# 🎬 Demo
+## 🎬 Demo
 
-Add your demo GIF:
-
-```text
-assets/demo.gif
-```
+<p align="center">
+  <img src="assets/demo.gif" alt="4EYEZ Demo" width="900">
+</p>
 
 # 🖼️ Screenshots
 
-Place your screenshots inside:
-
-```text
-assets/screenshots/
-```
 
 Example:
 
