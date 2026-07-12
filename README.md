@@ -104,7 +104,7 @@ This project is primarily built for learning purposes and to explore:
 ### Phase 6 — DevOps
 
 - ✅ Docker Support
-- ⬜ Docker Compose
+- ✅ Docker Compose
 - ⬜ GitHub Actions (CI)
 - ⬜ Release v1.0
 
