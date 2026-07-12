@@ -131,14 +131,17 @@ reports/
 
 # 🖼️ Screenshots
 
+<p align="center">
+<img src="assets/screenshots/cli.png" width="900">
+</p>
 
-Example:
+<p align="center">
+<img src="assets/screenshots/html-report.png" width="900">
+</p>
 
-```md
-![CLI](assets/screenshots/cli.png)
-![HTML Report](assets/screenshots/html-report.png)
-![PDF Report](assets/screenshots/pdf-report.png)
-```
+<p align="center">
+<img src="assets/screenshots/pdf-report.png" width="900">
+</p>
 
 # 🛣️ Roadmap
 
