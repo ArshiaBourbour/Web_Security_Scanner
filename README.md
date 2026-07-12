@@ -1,214 +1,179 @@
-# 🛡️ 4EYEZ
 
-> A lightweight modular Web Security Scanner built with Python.
+# 🛡️ 4EYEZ – Web Security Scanner
 
-![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)
-![Status](https://img.shields.io/badge/Status-Active%20Development-orange)
-![Version](https://img.shields.io/badge/Version-Demo-yellow)
+<p align="center">
+  <strong>A modular Python-based Web Security Scanner for educational purposes.</strong>
+</p>
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.12%2B-blue?logo=python)
+![Docker](https://img.shields.io/badge/Docker-Supported-2496ED?logo=docker)
+![Docker Compose](https://img.shields.io/badge/Docker_Compose-Ready-2496ED?logo=docker)
+![GitHub Actions](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=githubactions)
+![Pytest](https://img.shields.io/badge/Tests-107_Passing-success?logo=pytest)
 ![License](https://img.shields.io/badge/License-MIT-green)
+![Version](https://img.shields.io/badge/Version-v1.0.0-orange)
+
+</p>
 
 ---
 
-## 📖 About
+## ⚠️ Educational Disclaimer
 
-4EYEZ is an open-source web security scanner written in Python.
+**This project was created solely for educational purposes.**
 
-The project is designed to analyze the security posture of websites by performing multiple security checks, collecting information, detecting security issues, and generating a risk assessment.
+It demonstrates defensive web security concepts such as HTTP security headers, HTTPS configuration, sitemap analysis, risk scoring, and report generation.
 
-This project is primarily built for learning purposes and to explore:
-
-- Python
-- Networking
-- Web Security
-- Software Architecture
-- DevOps
-- Open Source Development
+It is **not intended for malicious activity** or unauthorized scanning. Only scan systems that you own or have explicit permission to assess.
 
 ---
 
-## ✨ Current Features
+# ✨ Features
 
-- ✅ SSL Certificate Scanner
-- ✅ HTTP Security Headers Scanner
-- ✅ DNS Records Scanner
-- ✅ WHOIS Scanner
-- ✅ HTML Structure Analyzer
-- ✅ Findings Engine
-- ✅ Rules Engine
-- ✅ Risk Analyzer
-- ✅ Security Score Engine
-- ✅ Command Line Interface (CLI)
-
----
-
-## 🚧 Roadmap
-
-### Phase 1 — Core Scanner
-
-- ✅ Project Structure
-- ✅ CLI Interface
-- ✅ SSL Scanner
-- ✅ Header Scanner
-- ✅ DNS Scanner
-- ✅ WHOIS Scanner
-- ✅ HTML Scanner
-- ✅ Scan Manager
-- ✅ Findings Engine
-- ✅ Rules Engine
-- ✅ Risk Analyzer
-- ✅ Score Engine
-- ✅ Final Refactoring
-- ✅ Improved Progress UI
+- Security Header Analysis
+- CSP / HSTS / CORS checks
+- Clickjacking detection
+- HTTP Methods analysis
+- Sensitive Paths inspection
+- Sitemap analysis
+- Executive Summary
+- Risk Score Engine
+- HTML / PDF / JSON reports
+- Docker support
+- Docker Compose support
+- GitHub Actions CI
+- 107 automated unit tests
 
 ---
 
-### Phase 2 — Detection Engine
+# 📂 Project Structure
 
-- ✅ Technology Detection
-- ✅ Cookie Security Analyzer
-- ✅ HTTP Methods Scanner
-- ✅ robots.txt Scanner
-- ✅ sitemap.xml Scanner
+```text
+Web_Security_Scanner/
+├── app.py
+├── scanner/
+├── reports/
+├── tests/
+├── Dockerfile
+├── docker-compose.yml
+├── .github/workflows/
+└── requirements*.txt
+```
 
----
-
-### Phase 3 — Security Analysis
-
-- ✅ CSP Analyzer
-- ✅ CORS Analyzer
-- ✅ HSTS Analyzer
-- ✅ Clickjacking Detection
-- ✅ Directory Listing Detection
-
----
-
-### Phase 4 — Reporting
-
-- ✅ HTML Report
-- ✅ PDF Report
-- ✅ JSON Export
-- ✅ Executive Summary
-
----
-
-### Phase 5 — Code Quality
-
-- ✅ Unit Tests
-- ✅ Logging Improvements
-- ✅ Configuration Support
-- ✅ Documentation
-- ✅ Error Handling Improvements
-
----
-
-### Phase 6 — DevOps
-
-- ✅ Docker Support
-- ✅ Docker Compose
-- ⬜ GitHub Actions (CI)
-- ⬜ Release v1.0
-
----
-
-## 🚀 Installation
-
-Clone the repository:
+# 🚀 Installation
 
 ```bash
 git clone https://github.com/ArshiaBourbour/Web_Security_Scanner.git
 cd Web_Security_Scanner
-```
-
-Create a virtual environment:
-
-```bash
 python -m venv venv
-```
-
-### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-### macOS / Linux
-
-```bash
 source venv/bin/activate
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## ▶️ Usage
-
-Run the scanner:
-
-```bash
+pip install -r requirements-dev.txt
 python app.py
 ```
 
-Enter the target URL when prompted:
+# 🐳 Docker
 
-```
-https://example.com
-```
-
----
-
-## 📂 Project Structure
-
-```
-4EYEZ/
-│
-├── cli/
-├── core/
-├── scanners/
-├── analysis/
-├── reports/
-├── tests/
-├── docs/
-│
-├── app.py
-├── config.py
-├── logging_config.py
-├── requirements.txt
-└── README.md
+```bash
+docker build -t web-security-scanner .
+docker run -it web-security-scanner
 ```
 
+# 🐳 Docker Compose
+
+```bash
+docker compose up
+```
+
+Stop:
+
+```bash
+docker compose down
+```
+
+# 🧪 Running Tests
+
+```bash
+python -m pytest
+```
+
+Current status:
+
+- ✅ 107 tests passing
+
+# ⚙️ Continuous Integration
+
+GitHub Actions automatically:
+
+- Installs dependencies
+- Runs pytest
+- Validates every push and pull request
+
+# 📊 Reports
+
+Generated reports include:
+
+- HTML
+- PDF
+- JSON
+
+Example output directory:
+
+```text
+reports/
+```
+
+# 🎬 Demo
+
+Add your demo GIF:
+
+```text
+assets/demo.gif
+```
+
+# 🖼️ Screenshots
+
+Place your screenshots inside:
+
+```text
+assets/screenshots/
+```
+
+Example:
+
+```md
+![CLI](assets/screenshots/cli.png)
+![HTML Report](assets/screenshots/html-report.png)
+![PDF Report](assets/screenshots/pdf-report.png)
+```
+
+# 🛣️ Roadmap
+
+- [x] Core Scanner
+- [x] Report Generator
+- [x] Unit Testing
+- [x] Docker
+- [x] Docker Compose
+- [x] GitHub Actions
+- [x] Version 1.0.0
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+Fork the repository, create a feature branch, commit your changes and open a Pull Request.
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+# 👨‍💻 Author
+
+**Arshia Bourbour**
+
+GitHub:
+https://github.com/ArshiaBourbour
+
 ---
 
-## 📌 Project Status
-
-🚧 **This project is under active development.**
-
-New features, improvements, refactoring, and documentation updates will be added gradually.
-
-The roadmap may evolve as the project grows.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-
-If you find a bug or have an idea for a new feature, feel free to open an Issue or submit a Pull Request.
-
----
-
-## ⚠️ Disclaimer
-
-This project is intended for educational purposes and authorized security testing only.
-
-Do **not** use this software against systems without permission.
-
----
-
-## 📄 License
-
-This project will be released under the **MIT License**.
+⭐ If you found this project useful, consider giving it a star.
