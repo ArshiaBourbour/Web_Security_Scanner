@@ -9,7 +9,7 @@ def banner() -> None:
         Panel.fit(
             "[bold cyan]4EYEZ[/bold cyan]\n"
             "Web Security Scanner\n"
-            "[yellow]Demo Version[/yellow]",
+            "[yellow]v1.0.0[/yellow]",
             border_style="cyan",
         )
     )
