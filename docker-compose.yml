@@ -1,0 +1,7 @@
+services:
+  web-security-scanner:
+    build:
+      context: .
+    container_name: web-security-scanner
+    stdin_open: true
+    tty: true
