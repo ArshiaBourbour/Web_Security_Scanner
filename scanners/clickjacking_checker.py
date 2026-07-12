@@ -60,7 +60,11 @@ def _analyze(xfo: Optional[str], frame_ancestors: Optional[str]) -> tuple[bool, 
                 }
             )
 
-    protected = bool(csp_protects) or bool(xfo_protects)
+    if csp_protects is not None:
+        protected = csp_protects
+    else:
+        protected = bool(xfo_protects)
+
     source = "csp" if csp_protects else ("x-frame-options" if xfo_protects else "none")
 
     if not protected:
